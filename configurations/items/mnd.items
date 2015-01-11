@@ -1,0 +1,105 @@
+Group All
+Group gH                (All)
+Group gAlarm            (All)
+Group gPresence         (All)
+Group Outdoor           (All)
+Group Shutters          (All)
+Group Weather           (All)
+Group Status            (All)
+
+Group GH_Living      "Living Room"     <livingroom>   (gH)
+Group GH_Kitchen     "Kitchen"         <owen2>        (gH)
+Group GH_Toilet      "WC"              <wc>           (gH)
+Group GH_Dusch       "Dusch"           <shower>       (gH)
+Group GH_Bathroom    "Bathroom"        <duck>         (gH)
+Group GH_Corridor    "Corridor"        <corridor>     (gH)
+Group GH_Bed_Master  "Bedroom Master"  <bedroom_master> (gH)
+Group GH_Bed_Verte   "Bedroom Verte"   <bedroom2>      (gH)
+Group GH_Bed_Azure   "Bedroom Azure"   <bedroom2>      (gH)
+Group GH_Bed_Jaune   "Bedroom Jaune"   <bedroom2>      (gH)
+
+
+/* active groups */
+Group:Switch:OR(ON, OFF)           Lights         "All Lights [(%d)]"                                   (All)
+Group:Switch:OR(ON, OFF)           Heating        "No. of Active Heatings [(%d)]"      <heating>        (All)
+Group:Number:AVG                   Temperature    "Avg. Room Temperature [%.1f °C]"    <temperature>    (Status)
+Group:Contact:OR(OPEN, CLOSED)     Windows        "Open windows [(%d)]"                <contact>        (All)
+
+Switch  ipcam_fix     "Alarm ipcam_fix" (gAlarm)
+Switch  ipcam_dyn     "Alarm ipcam_dyn" (gAlarm)
+
+Switch  PresenceJan_PhoneMqttHome   "Jan @ Home"    (gPresence)  { mqttitude="mosquitto:owntracks/ser_owntrack/2c614c3ef834b9ce:lausanne" }
+Switch  PresenceJan_PhoneMqttHus1   "Jan @ Hus1"    (gPresence)  { mqttitude="mosquitto:owntracks/ser_owntrack/1c614c3ef834b9ce:hus1" }
+Switch  PresenceJan_PhoneMqttWork   "Jan @ Work"    (gPresence)  { mqttitude="mosquitto:owntracks/ser_owntrack/1c614c3ef834b9ce:jan_jobb" }
+Switch  PresenceJan_PhoneMqttGachet "Jan @ Gachet"  (gPresence)  { mqttitude="mosquitto:owntracks/ser_owntrack/1c614c3ef834b9ce:gachet" }
+Switch  PresenceJan_PhoneMqttMontriond "Jan @ Montriond"  (gPresence)  { mqttitude="mosquitto:owntracks/ser_owntrack/1c614c3ef834b9ce:montriond" }
+String  Location_Jan_Phone                                       { mqtt="<[mosquitto:owntracks/ser_owntrack/1c614c3ef834b9ce:state:JS(mqttitude-coordinates.js)]" }
+
+/* hus1 */
+
+Number  Temperature_Outside4in1 "Temperature [%.1f °C]"    <temperature>  (GH_Bed_Master,Temperature) { zwave="7:1:command=sensor_multilevel,sensor_type=1" }
+Number  Light_Outside4in1       "Light [%.0f Lux]"         <light_sensor> (GH_Bed_Master)             { zwave="7:1:command=sensor_multilevel,sensor_type=3" }
+Contact Motion_Outside4in1      "Motion [MAP(en.map):%s]"  <motion>       (GH_Bed_Master)             { zwave="7:1:command=sensor_binary,sensor_type=12" }
+Contact Contact_Outside4in1     "Door [MAP(en.map):%s]"    <frontdoor>    (GH_Bed_Master)             { zwave="7:1:command=sensor_binary,sensor_type=10" }
+Number  Battery_Outside4in1     "Battery [%s %%]"          <battery2>     (GH_Bed_Master)             { zwave="7:1:command=battery" }
+
+Contact Flood_Kitchen           "Flood [MAP(en.map):%s]"               <water>        (GH_Kitchen)                { zwave="2:command=sensor_binary" }
+Number  Battery_Flood_Kitchen   "Flood Battery [%s %%]"                <battery2>     (GH_Kitchen)                { zwave="2:command=battery" }
+
+Contact Detector_Fire_Kitchen   "Fire Detector [MAP(en.map):%s]"       <fire3>        (GH_Kitchen)                { zwave="8:command=sensor_binary" }
+Number  Battery_Fire_Kitchen    "Fire Detector Battery [%s %%]"        <battery2>     (GH_Kitchen)                { zwave="8:command=battery" }
+
+
+/* Lights */
+/* Switch Light_Outdoor_Pool    "Pool Spotlight"                                      (Outdoor, Lights) */
+Dimmer Light_Outdoor_Pool       "Dimmer [%d %%]"                       <slider>       (Outdoor, Lights)           { zwave="9:command=switch_multilevel,restore_last_value=true" }
+Number Light_Outdoor_Pool_cons  "PoolDimmer [%.3f kWh]"                <energy>       (Outdoor, Lights)           { zwave="9:command=meter" }
+Switch Light_Outdoor_Terrace    "Terrace"                                             (Outdoor, Lights)
+Switch Light_Outdoor_Frontdoor  "Frontdoor"                                           (Outdoor, Lights)
+
+
+Switch Power                         "Benq Power"                                     (GH_Living)  /* { epsonprojector="hometheater:Power:60000" }     */
+String Source                        "Benq Source"                                    (GH_Living)  /* { epsonprojector="hometheater:Source:ON,60000" } */
+Number LampTime                      "Benq Lamptime"                                  (GH_Living)  /* { epsonprojector="<hometheater:LampTime:60000" } */
+
+/* Heating */
+Switch Heating_GH_Corridor           "GH Corridor"                <heating>     (GH_Corridor, Heating)
+
+
+/* Rollershutters */
+Switch Shutter_all (Shutters)
+
+Rollershutter Shutter_GH_Terrace     "Terrace Store"                            (Outdoor, Shutters)
+
+
+/* Windows */
+Contact Window_GH_Frontdoor     "Frontdoor [MAP(en.map):%s]"                    (GH_Corridor, Windows)
+Contact Garage_Door             "Garage Door [MAP(en.map):%s]"                  (Outdoor, Windows)
+
+
+Group Weather_Chart                                                             (Weather)
+String  wp0                     "Today [%s]"                      <wp0>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Lausanne.xml:3600000:XSLT(wunderground_icon_forecast_p0.xsl)]"}
+String  wp1                     "Tonight [%s]"                    <wp1>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Lausanne.xml:3600000:XSLT(wunderground_icon_forecast_p1.xsl)]"}
+String  wp2                     "Tomorrow [%s]"                   <wp2>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Lausanne.xml:3600000:XSLT(wunderground_icon_forecast_p2.xsl)]"}
+Number  Weather_Temperature     "Outside Temperature [%.1f °C]"   <temperature> (Weather_Chart)  { http="<[http://api.wunderground.com/api/48962d0fa793a388/conditions/q/Switzerland/Lausanne.xml:3600000:XSLT(wunderground_conditions.xsl)]" }
+Number  Weather_Temp_Max        "Todays Maximum [%.1f °C]"        <temperature> (Weather_Chart)
+Number  Weather_Temp_Min        "Todays Minimum [%.1f °C]"        <temperature> (Weather_Chart)
+Number  Weather_Chart_Period    "Chart Period"
+DateTime Weather_LastUpdate     "Last Update [%1$ta %1$tR]"       <clock>
+
+/* NTP binding demo item */
+DateTime        Date            "Date [%1$tA, %1$td.%1$tm.%1$tY]" <calendar>                     { ntp="Europe/Zurich:fr_CH" }
+
+/* Demo items */
+Switch DemoSwitch               "Switch"
+Dimmer DimmedLight              "Dimmer [%d %%]"                  <slider>
+Color  RGBLight                 "RGB Light"                       <slider>
+Rollershutter DemoShutter       "Roller Shutter"
+Dimmer DemoBlinds               "Blinds [%d %%]"                  <rollershutter>
+Number Scene_General            "Scene"                           <sofa>
+Number Radio_Station            "Radio"                           <network>
+Dimmer Volume                   "Volume [%.1f %%]"
+Number Temperature_Setpoint     "Temperature [%.1f °C]" <temperature>
+
+String UnknownDevices    "Unknown Devices in Range: [%s]" { bluetooth="?" }
+Number NoOfPairedDevices "Paired Devices in Range: [%d]"  { bluetooth="!" }
