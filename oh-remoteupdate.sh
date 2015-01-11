@@ -86,4 +86,8 @@ done <$CONFIG_FILE
 echo "Executing: rsync -avz --exclude '.git' -e $SSH_CMD \"$TEMP_DIR\" $CONNECTION:\"$REMOTE_DIR\""
 rsync -avz --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:"$REMOTE_DIR"
 
+#echo "rsync -avz --exclude '.git' -e ${SSH_CMD} \"${LOCAL_DIR}/../webapps/\" ${CONNECTION}:\"${REMOTE_DIR}/../webapps/\""
+#echo "${LOCAL_DIR}/../webapps/"
+rsync -avz --exclude '.git' -e ${SSH_CMD} "${LOCAL_DIR}/../webapps/" ${CONNECTION}:"${REMOTE_DIR}/../webapps/"
+
 rm -rf $TEMP_DIR
