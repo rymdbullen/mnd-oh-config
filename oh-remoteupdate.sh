@@ -26,6 +26,7 @@ if [[ ! $TARGET_VERIFIED -eq 0 ]]; then
     exit 1
 fi
 CONFIG_FILE="../cool.cfg@${TARGET}"
+
 if [ ! -f $CONFIG_FILE ]; then
   echo "${CONFIG_FILE} doesn't exist"
   exit 1
@@ -34,6 +35,7 @@ source $CONFIG_FILE
 
 SSH_CMD='ssh '
 LOCAL_DIR="./configurations"
+WEBAPPS_DIR="./webapps"
 CONNECTION="${USER}@${HOST}"
 
 if [ ! -d $LOCAL_DIR/persistence ]; then
@@ -60,8 +62,8 @@ echo "Config for the IPCAM_DYN_URL: $IPCAM_DYN_URL" >&2
 git pull
 
 # copy to staging dir
-echo "copy to staging dir '$TEMP_DIR'"
-rsync -avz --quiet --exclude '.git' "$LOCAL_DIR" "$TEMP_DIR"
+echo "copy to staging dir '$TEMP_DIR': ${LOCAL_DIR}"
+rsync -avz --quiet --exclude '.git' "${LOCAL_DIR}" "${TEMP_DIR}"
 
 function replace() {
     langRegex='(.*)=\"(.*)"'
@@ -82,12 +84,13 @@ while read p; do
     replace $p
 done <$CONFIG_FILE
 
+echo "copy to staging dir '$TEMP_DIR': ${WEBAPPS_DIR}"
+rsync -avz --quiet --exclude '.git' "$WEBAPPS_DIR" "${TEMP_DIR}"
 
-echo "Executing: rsync -avz --exclude '.git' -e $SSH_CMD \"$TEMP_DIR\" $CONNECTION:\"$REMOTE_DIR\""
+echo "Executing: rsync -avz --exclude '.git' -e ${SSH_CMD} \"${TEMP_DIR}/\" ${CONNECTION}:\"${REMOTE_DIR}\""
 rsync -avz --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:"$REMOTE_DIR"
 
-#echo "rsync -avz --exclude '.git' -e ${SSH_CMD} \"${LOCAL_DIR}/../webapps/\" ${CONNECTION}:\"${REMOTE_DIR}/../webapps/\""
-#echo "${LOCAL_DIR}/../webapps/"
-rsync -avz --exclude '.git' -e ${SSH_CMD} "${LOCAL_DIR}/../webapps/" ${CONNECTION}:"${REMOTE_DIR}/../webapps/"
+ssh ${CONNECTION} 'bash -s' < link-addons.sh
+ssh ${CONNECTION} chmod 755 /opt/oh-1.6.2/
 
 rm -rf $TEMP_DIR

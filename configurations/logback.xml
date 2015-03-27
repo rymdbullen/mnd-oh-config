@@ -6,11 +6,11 @@
 		</encoder>
 	</appender>
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${openhab.logdir:-logs}/openhab.log</file>
                 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                         <!-- daily rollover and archiving -->
-                        <fileNamePattern>${openhab.logdir:-logs}/openhab-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+                        <fileNamePattern>${openhab.logdir:-logs}/openhab-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
                         <!-- keep 30 days' worth of history -->
                         <maxHistory>30</maxHistory>
                 </rollingPolicy>
@@ -23,7 +23,7 @@
 		<file>${openhab.logdir:-logs}/events.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover and archiving -->
-			<fileNamePattern>${openhab.logdir:-logs}/events-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<fileNamePattern>${openhab.logdir:-logs}/events-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
@@ -39,7 +39,7 @@
 
 	<logger name="org.openhab" level="INFO"/>
 
-	<logger name="org.openhab.binding.zwave" level="DEBUG"/>
+	<!--logger name="org.openhab.binding.zwave" level="DEBUG"/-->
 	<logger name="org.openhab.binding.mqtt" level="DEBUG"/>
 	<logger name="org.openhab.binding.mqttitude" level="DEBUG"/>
 
