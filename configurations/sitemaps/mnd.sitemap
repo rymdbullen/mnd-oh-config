@@ -38,14 +38,13 @@ sitemap demo label="Main Menu"
                         }
                 }
         }
-        Frame label="Presence" {
-                Text label="Presence" icon="present" {
-                        Frame label="Radio Control"  {
-                                Group item=gPresence label="Presence" icon="present"
-                                Webview url="https://@@HOST@@/static/map.html"  height=12
-                        }
+        Frame label="Sonos" {
+                Text label="Multimedia" icon="video" {
+                    Group item=Sonos label="Sonos" icon="multimedia"
                 }
-                Group item=gAlarm label="Motion Alarms" icon="motion"
+                Text label="Multimedia" icon="video" {
+                    Group item=Sonos2 label="Sonos" icon="multimedia"
+                }
         }
         Frame label="Date" {
                 Text item=Date

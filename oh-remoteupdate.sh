@@ -88,7 +88,7 @@ echo "copy to staging dir '$TEMP_DIR': ${WEBAPPS_DIR}"
 rsync -avz --quiet --exclude '.git' "$WEBAPPS_DIR" "${TEMP_DIR}"
 
 echo "Executing: rsync -avz --exclude '.git' -e ${SSH_CMD} \"${TEMP_DIR}/\" ${CONNECTION}:\"${REMOTE_DIR}\""
-rsync -avz --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:"$REMOTE_DIR"
+rsync -avz --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:/opt/openhab
 
 ssh ${CONNECTION} 'bash -s' < link-addons.sh
 ssh ${CONNECTION} chmod 755 /opt/oh-1.6.2/
