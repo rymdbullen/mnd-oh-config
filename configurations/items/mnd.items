@@ -6,8 +6,8 @@ Group Outdoor           (All)
 Group Shutters          (All)
 Group Weather           (All)
 Group Status            (All)
-Group Sonos            (All)
-Group Sonos2           (All)
+Group Sonos             (All)
+Group Sonos2            (All)
 
 Group GH_Living      "Living Room"     <video>        (gH)
 Group GH_Kitchen     "Kitchen"         <kitchen>      (gH)
@@ -101,10 +101,12 @@ Contact Garage_Door             "Garage Door [MAP(en.map):%s]"                  
 
 
 Group Weather_Chart                                                             (Weather)
-String  wp0                     "Today [%s]"                      <wp0>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/France/La_Garde.xml:3600000:XSLT(wunderground_icon_forecast_p0.xsl)]"}
-String  wp1                     "Tonight [%s]"                    <wp1>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/France/La_Garde.xml:3600000:XSLT(wunderground_icon_forecast_p1.xsl)]"}
-String  wp2                     "Tomorrow [%s]"                   <wp2>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/France/La_Garde.xml:3600000:XSLT(wunderground_icon_forecast_p2.xsl)]"}
-Number  Weather_Temperature     "Outside Temperature [%.1f °C]"   <temperature> (Weather_Chart)  { http="<[http://api.wunderground.com/api/48962d0fa793a388/conditions/q/France/La_Garde.xml:3600000:XSLT(wunderground_conditions.xsl)]" }
+String  wp0                     "Today [%s]"                      <wp0>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Pully.xml:3600000:XSLT(wunderground_icon_forecast_p0.xsl)]"}
+String  wp1                     "Tonight [%s]"                    <wp1>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Pully.xml:3600000:XSLT(wunderground_icon_forecast_p1.xsl)]"}
+String  wp2                     "Tomorrow [%s]"                   <wp2>                          { http="<[http://api.wunderground.com/api/48962d0fa793a388/forecast/q/Switzerland/Pully.xml:3600000:XSLT(wunderground_icon_forecast_p2.xsl)]"}
+Number  Weather_Temperature     "Outside Temperature [%.1f °C]"   <temperature> (Weather_Chart)  { http="<[http://api.wunderground.com/api/48962d0fa793a388/conditions/q/Switzerland/Pully.xml:3600000:XSLT(wunderground_conditions.xsl)]" }
+Number  Weather_Humidity        "Outside Humidity [%.1f %%]"      <temperature> (Weather)        { http="<[http://api.wunderground.com/api/48962d0fa793a388/conditions/q/Switzerland/Pully.json:3600000:JS(getValueHumidity.js)]" }
+Number  Weather_Humidex         "Humidex [SCALE(humidex.scale):%s]"             (Weather)
 Number  Weather_Temp_Max        "Todays Maximum [%.1f °C]"        <temperature> (Weather_Chart)
 Number  Weather_Temp_Min        "Todays Minimum [%.1f °C]"        <temperature> (Weather_Chart)
 Number  Weather_Chart_Period    "Chart Period"
