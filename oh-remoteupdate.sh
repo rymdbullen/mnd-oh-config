@@ -75,7 +75,7 @@ function replace() {
            RE2=${RE2//[\&]/\\&}
 
 #           echo "find $TEMP_DIR -type f -print0 | xargs -0 sed -i \"s/@@${RE1}@@/${RE2}/g\""
-           find $TEMP_DIR -type f -print0       | xargs -0 sed -i  "s/@@${RE1}@@/${RE2}/g"
+           find $TEMP_DIR -type f -print0 | xargs -0 sed -i  "s/@@${RE1}@@/${RE2}/g"
         fi 
     fi 
 }
@@ -88,9 +88,9 @@ echo "copy to staging dir '$TEMP_DIR': ${WEBAPPS_DIR}"
 rsync -avz --quiet --exclude '.git' "$WEBAPPS_DIR" "${TEMP_DIR}"
 
 echo "Executing: rsync -avz --exclude '.git' -e ${SSH_CMD} \"${TEMP_DIR}/\" ${CONNECTION}:\"${REMOTE_DIR}\""
-rsync -avz --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:/opt/openhab
+rsync -avz --quiet --exclude '.git' -e $SSH_CMD "$TEMP_DIR/" $CONNECTION:/opt/openhab
 
 ssh ${CONNECTION} 'bash -s' < link-addons.sh
-ssh ${CONNECTION} chmod 755 /opt/oh-1.6.2/
+ssh ${CONNECTION} chmod 755 "/opt/oh-${OH_VERSION}/"
 
 rm -rf $TEMP_DIR
